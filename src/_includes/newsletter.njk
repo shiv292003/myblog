@@ -1,5 +1,5 @@
-<section class="newsletter" aria-labelledby="newsletter-title">
-  <div class="newsletter-copy"><span class="envelope" aria-hidden="true">✉</span><div><p class="eyebrow">The occasional dispatch</p><h2 id="newsletter-title">A letter when there's something to say.</h2><p>New writing. Occasionally. No noise in between.</p></div></div>
+<section class="newsletter" id="newsletter" aria-labelledby="newsletter-title">
+  <div class="newsletter-copy"><span class="envelope" aria-hidden="true">✉</span><div><p class="eyebrow">Read at your own pace</p><h2 id="newsletter-title">Follow {{ site.title }}.</h2><p>New writing, without having to check back here.</p></div></div>
   <div class="newsletter-action">
     {% if integrations.buttondown and site.isProduction %}
     <form action="https://buttondown.com/api/emails/embed-subscribe/{{ integrations.buttondown }}" method="post">
@@ -9,8 +9,8 @@
       <p class="fine-print">Via Buttondown. Unsubscribe anytime. <a href="/privacy/">Privacy</a></p>
     </form>
     {% else %}
-    <a class="retro-button" href="/feed.xml">Follow via RSS <span aria-hidden="true">↗</span></a>
-    <p class="fine-print">Email signup isn't enabled on this version.<br>The RSS feed is ready to read.</p>
+    <a class="retro-button" href="/follow/">How to follow <span aria-hidden="true">→</span></a>
+    <p class="fine-print">Use an RSS reader. No signup needed.<br>Our guide explains how to get started.</p>
     {% endif %}
   </div>
 </section>

@@ -2,10 +2,10 @@
 title: In praise of an ordinary afternoon
 slug: ordinary-afternoon
 date: 2026-10-12
-section: living
+section: life
 description: Noticing the small things that rarely make it into the story.
 sample: true
-draft: false
+draft: true
 ---
 Not every day arrives with a lesson. Some days are a cup of tea cooling on the table, a half-read book, and the particular light that comes through the window at four.
 

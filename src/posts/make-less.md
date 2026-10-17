@@ -2,10 +2,10 @@
 title: Make less. Make it yours.
 slug: make-less
 date: 2026-10-03
-section: making
+section: projects
 description: A few thoughts on small projects and knowing when to stop adding things.
 sample: true
-draft: false
+draft: true
 ---
 The first version of a project is often an argument with yourself about what to leave out.
 

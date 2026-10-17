@@ -2,7 +2,54 @@
 
 Last updated: 2026-10-17.
 
-**Latest status:** the monochrome notebook redesign is implemented. The initial commit `0652517` was pushed to `https://github.com/shiv292003/myblog.git`, with local and remote commit IDs verified equal. Pre-deployment changes now update Eleventy to 3.1.7, require Vercel to run tests, and isolate live services from local/preview builds. The user authorized a first test deployment with labeled sample articles and all optional services disabled. Vercel deployment has not started. Explain each publishing step and obtain permission before executing it.
+**Release snapshot:** personalization to **Quest**, a friendly RSS guide, sample hiding, and an owner-supplied portrait are implemented and locally verified. The user reviewed the local preview and explicitly said **"OKAY PUSH IT"** on 2026-10-17, authorizing this update's commit and push. A push to main may automatically redeploy Vercel. At preparation of this snapshot, the last verified live deployment was still Margin notes; verify the new release after pushing. Future publishing changes still require permission.
+
+## Quest personalization: current local work
+
+- User approved local implementation/testing, and asked to hide every sample article until real writing is added.
+- Approved identity: **Shiv Shakti Sharma**, blog **Quest**, tagline **"On a quest. The world as I see it."**
+- Approved biography is stored in [site data](src/_data/site.js) and rendered by [About](src/about.njk). About moved from Markdown to Nunjucks to reuse shared data; the URL stays `/about/`.
+- Approved public contact: `shivshakti292003@gmail.com`. This is not the repository's commit email; keep those identities distinct.
+- Approved profiles: https://www.linkedin.com/in/shiv-shakti-sharma-4830931b1/ , https://github.com/shiv292003 , https://x.com/shiv_buildsfail .
+- Topics, in order: Books (`books`), Technology (`technology`), Projects (`projects`), Life (`life`). All four remain visible with no published articles.
+- Header/footer, favicon, metadata, homepage and privacy contact use the Quest identity. Public profile links are ordinary links with no widgets.
+- The user supplied a photo and authorized its use. [The optimized portrait](src/assets/portrait.png) is a 480px square, 55,313-byte PNG with black/white error-diffusion dots and no original photo metadata. It appears on About, with alt text and intrinsic dimensions. The original attachment is unchanged and is not in the repository. Processing was local, with no upload to an image service and no new dependency.
+- Human Follow/RSS buttons now open [the RSS guide](src/follow.njk) at `/follow/`; RSS autodiscovery and the raw feed remain at `/feed.xml`. The guide explains the browser's XML display, provides a copyable absolute address, and is included in the sitemap.
+- All six samples plus the original draft are `draft: true`. Their sections were mapped to valid new IDs. A clean build removes stale article output. Draft files remain in the source repository; earlier public copies or caches are not erased by this change.
+- Empty homepage/archive/feed states are deliberate. First real article should use a new stable slug and `draft: false`.
+- Newsletter, comments, analytics, and search-indexing policy are unchanged. No account-backed service was enabled.
+- Tests now cover approved identity/contact/topics, portrait dimensions/size, hidden sample URLs, human-versus-machine RSS links, empty states, and Follow-page service gates.
+- Verification: clean `npm run check` passed all **16 tests**. Generated links/assets and all seven hidden example URLs were checked; no sample pages were generated.
+- XML parsing passed: Quest RSS has zero items; the sitemap has five public page URLs.
+- Portrait verification checked all 230,400 pixels: opaque black or white only. PNG has no EXIF or text metadata chunks.
+- Local browser checks passed **25 layout cases**: Home, About, Follow, Archive and Privacy at 320, 375, 500, 768 and 1280px. Each returned HTTP 200, had one main heading/landmark, and had no horizontal page overflow. The portrait loaded at every tested width. Desktop About was visually inspected.
+- Footer RSS navigation reached the HTML Follow guide. Keyboard select-all selected the complete readonly feed address. A fresh Tab reached the visible skip link with a dashed focus outline.
+- No third-party form was submitted or service enabled. These are local checks, not verification of a new public deployment.
+- The test preview was stopped, then a new user-requested preview was started at `http://localhost:8081/` and verified responsive. It was left running for review (`quest-user-preview`); check whether it is still available before starting another server or running a clean build.
+- Immediately before publishing, `npm test` again passed all 16 tests and `git diff --check` passed. Only the approved personalization, portrait, samples, tests and documentation were in the changed-file list.
+
+The deployment/readiness records below describe the earlier public version, not this unpublished Quest update.
+
+## First live deployment: verified 2026-10-17
+
+- URL: https://myblog-wheat-nu.vercel.app/
+- User imported `shiv292003/myblog`, branch `main`, in their own Vercel account and clicked Deploy after explicit confirmation.
+- Import screenshot showed Hobby plan, project `myblog`, root `./`, Eleventy preset, build `npm run check`, output `_site`, install `npm ci`.
+- User left custom environment variables unset. Vercel's supplied production hostname produced the correct canonical/feed/sitemap origin without manually setting `SITE_URL`.
+- Homepage, archive, About, privacy, and all six article URLs returned HTTP 200.
+- CSS, original SVG illustration and favicon returned HTTP 200 with appropriate content types; the homepage illustration decoded in the browser.
+- Custom missing-page route and `/writing/draft-example/` returned HTTP 404 and the site's own not-found page.
+- RSS parsed with six items, and all tested RSS site/article/GUID URLs use the deployed origin.
+- Sitemap parsed with ten URLs, all on the deployed origin. Homepage canonical is `https://myblog-wheat-nu.vercel.app/`, with no localhost reference.
+- `robots.txt` currently permits indexing and points to the correct sitemap. The production homepage has no noindex directive: sample content is public and indexable.
+- Live source checks found no active analytics script, email signup form, or comment loader; inactive-service messages are displayed.
+- Security headers checked: `X-Content-Type-Options: nosniff` and `Referrer-Policy: strict-origin-when-cross-origin`.
+- Fifteen browser layout cases passed: homepage, archive, illustrated article, table article, code article at 320, 375 and 1280px; no horizontal page overflow, one main heading per page, dates visible.
+- Article and archive link navigation passed.
+- Live keyboard-focus and lazy-image timing checks were limited by an inactive browser tab; do not report those as freshly passed. Earlier local keyboard checks passed. The inactive tab prevented reliable scroll-stability/focus waits, not HTTP delivery.
+- No forms were submitted, no services enabled, and no Vercel settings changed during verification.
+- Private build logs, selected Vercel Node runtime and exact deployed commit metadata were not inspected. The configured test gate and locally passing 13 tests are known; confirm cloud logs before making more specific claims.
+- README/context were updated locally with permission after verification. They have not been committed or pushed as part of that step. A future push to main may trigger automatic Vercel redeployment; ask permission first.
 
 ## Deployment-readiness checkpoint
 
@@ -16,7 +63,7 @@ Last updated: 2026-10-17.
 - The user chose to defer comment recovery work until comments are enabled; leave all optional service identifiers unset for the first deployment.
 - First deployment may be publicly accessible and contain the sample articles; the user explicitly accepted that scope. This is not a finished personal-content launch.
 - Local checks used Node 26.1.0. Verify the runtime selected by Vercel, and require the deployed build/tests to pass there before reporting compatibility.
-- Further staging, committing, pushing, Vercel account connection and deployment require the user's separate approval. Check Git and the actual deployment status rather than assuming this checkpoint proves those steps completed.
+- Further staging, committing, pushing, account changes and deployments require the user's separate approval. The first deployment has since been verified as described above; this readiness checkpoint records its prerequisites.
 
 This is the handoff and decision record for continuing this project in another chat. It records actual implementation separately from proposed changes. It is not automatically loaded by every chat tool: open the correct workspace and explicitly ask the next assistant to read this file.
 
@@ -31,7 +78,8 @@ This is the handoff and decision record for continuing this project in another c
 - The remote was queried successfully and had no references during initial setup. This is a setup observation, not a guarantee about its later contents.
 - Verify current commit/upload state using `git status`, `git log -1`, and the remote branch; do not infer a successful upload from the presence of this file.
 - Initial upload verified: local and GitHub `main` matched commit `0652517b9e1174e14465c6d8c02eaef9fa81546c`.
-- No Vercel deployment or live newsletter/comment/analytics account was connected at this checkpoint.
+- Readiness upload verified: local and GitHub `main` matched `9d4e73fdd75caed5c5a5624d0d59ee5d23d5299c`.
+- Vercel is now connected and the core site is live; newsletter, comments and analytics remain disabled.
 
 ## User's goals and agreed choices
 
@@ -58,14 +106,14 @@ Reference URLs supplied by the user:
 
 ## Current implementation
 
-- Placeholder identity: "Margin notes", with an `m.` monogram.
+- Quest identity, with a `Q` monogram and the owner's confirmed public information.
 - Pure black/white authored palette, Georgia headings/prose, Verdana controls, Courier labels, and a system handwriting-font fallback for margin notes.
 - Dotted outer paper, double rules, square monogram, compact masthead/navigation, original notebook/pencil SVG, and monochrome code styling.
-- Homepage introduction, compact pinned essay, three theme groups, notebook-style sidebar, sample blogroll, and subscription area.
+- Homepage introduction, four topic groups, notebook-style sidebar, public profiles, and follow area. Pinned-essay UI appears only when articles are published.
 - Raised/inset CSS buttons with hover/pressed states and 44px minimum height; mobile article dates remain visible.
-- Article pages, archive, About, privacy disclosure, custom 404.
-- Six published sample articles and one excluded draft. Two new originals exercise a long title, captioned drawing, a table, and a second archive year.
-- Themes: `living`, `learning`, `making`.
+- Article layout, archive, About with dotted portrait, Follow guide, privacy disclosure, custom 404.
+- Zero published articles; six samples and the original draft are retained as excluded examples.
+- Themes: `books`, `technology`, `projects`, `life`.
 - Permanent article paths: `/writing/<slug>/`.
 - RSS is summaries and links, not full article content.
 - Sitemap and robots output; canonical/Open Graph text metadata; SVG favicon.
@@ -93,7 +141,7 @@ Markdown + templates + CSS
      optional services
 ```
 
-GitHub source upload is verified. The Vercel configuration is ready, but Vercel has not yet been connected to the repository.
+GitHub source upload and the first Vercel deployment are verified. Future pushes to the connected production branch may trigger an automatic build and deployment.
 
 ### Commands
 
@@ -286,7 +334,7 @@ All 33 project-owned files existing at the time of the initial review were revie
 | [src/assets/favicon.svg](src/assets/favicon.svg) | Small and lightweight; personalize later, optionally use squarer old-web styling. |
 | [src/index.njk](src/index.njk) | Correct themed lists and empty-state handling; replace hero/card-heavy hierarchy with an inviting directory. |
 | [src/archive.njk](src/archive.njk) | Clear newest-first archive; restore mobile dates and test multiple years. |
-| [src/about.md](src/about.md) | Entirely starter copy; requires the user's introduction. |
+| [src/about.njk](src/about.njk) (formerly `src/about.md`) | At review time, entirely starter copy; subsequently personalized and converted to Nunjucks. |
 | [src/privacy.njk](src/privacy.njk) | Conditional disclosures are useful; finish owner contact and review actual service setup. |
 | [src/404.njk](src/404.njk) | Useful return links; keep and verify deployed HTTP 404 behavior. |
 | [src/feed.njk](src/feed.njk) | Parsed correctly; summary feed is intentional. Full-content feed is optional. |
@@ -316,14 +364,14 @@ All 33 project-owned files existing at the time of the initial review were revie
 
 ## Next work, in order
 
-1. With separate approval, commit and push the verified readiness changes to GitHub.
-2. With approval, connect the repository to the user's Vercel account, inspect settings/runtime and deploy the core sample blog.
-3. Verify the hosted homepage, direct article links, styles/images, archive, feed, sitemap, canonical domain and actual HTTP 404/draft responses.
-4. Keep optional service identifiers unset. Finish comment recovery before enabling comments.
-5. User supplies display name, short bio, actual articles, final themes and domain choice.
-6. Replace placeholders and complete the privacy/contact text before promoting the site as a finished personal blog.
+1. Commit and push this approved update; verify local and remote commit IDs rather than inferring upload from this snapshot.
+2. Check that Vercel has published the new version; the user has authorized this release, not unrelated future publishing changes.
+3. Verify the new live identity, portrait, Follow guide, raw feed, and HTTP 404 for previously published sample URLs after redeployment.
+4. Review the private Vercel build log/runtime with the user, without asking for secrets.
+5. Add the user's first real article when supplied. Custom domain remains optional.
+6. Keep optional service identifiers unset. Finish comment recovery before enabling comments.
 7. Connect service accounts/domain only with authorization, and test real signup, unsubscribe, comments and analytics flows.
 
-Unresolved: final sign-off on the implemented design, owner identity, domain, production origin, account identifiers, repository visibility choice, and actual article content.
+Unresolved at release preparation: confirmation of the new GitHub upload/deployment, first real writing, optional custom domain, service account identifiers, and private cloud build-log/runtime confirmation. Owner identity, biography, topics, contact, portrait and publishing this release are approved. The production origin is verified; a custom domain is optional.
 
 Keep this record current after meaningful decisions, implementations and checks. Record completed work as completed only after verification; leave proposals marked pending.

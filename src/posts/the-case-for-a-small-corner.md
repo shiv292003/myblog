@@ -2,11 +2,11 @@
 title: The case for a small corner of the internet
 slug: a-small-corner
 date: 2026-10-15
-section: making
+section: projects
 description: On having a place of your own, and resisting the urge to make it everything.
 featured: true
 sample: true
-draft: false
+draft: true
 ---
 There is something reassuring about a website that doesn't ask much of you. A title, a few links, a page of writing. You arrive, read something, and leave when you're ready.
 

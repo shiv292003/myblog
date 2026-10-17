@@ -2,7 +2,7 @@
 title: An unfinished thought
 slug: draft-example
 date: 2026-10-15
-section: learning
+section: life
 description: A starter draft that is deliberately excluded from the published website.
 draft: true
 ---

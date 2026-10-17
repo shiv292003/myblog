@@ -5,7 +5,7 @@ eyebrow: The small print
 description: What connects to this site, and what happens when you use it.
 permalink: /privacy/
 ---
-<p>This site serves static pages. You do not need an account to read them. The hosting provider, Vercel, may process request data to deliver and secure the website. See <a href="https://vercel.com/legal/privacy-policy">Vercel's privacy policy</a>.</p>
+<p>{{ site.title }} is a personal website by {{ site.author }}. It serves static pages, and you do not need an account to read them. The hosting provider, Vercel, may process request data to deliver and secure the website. See <a href="https://vercel.com/legal/privacy-policy">Vercel's privacy policy</a>.</p>
 <h2>Newsletter</h2>
 {% if integrations.buttondown and site.isProduction %}
 <p>If you submit the subscription form, your email address is sent to Buttondown to manage your subscription and send email. You can unsubscribe using the link in those emails. See <a href="https://buttondown.com/legal/privacy">Buttondown's privacy policy</a>.</p>
@@ -18,5 +18,7 @@ permalink: /privacy/
 {% if integrations.goatcounter and site.isProduction %}
 <p>This site uses GoatCounter for aggregate traffic measurement. Its script sends visit information to that service; the default service is designed to work without tracking cookies. See <a href="https://www.goatcounter.com/privacy">GoatCounter's privacy policy</a>.</p>
 {% else %}<p>No analytics script is currently enabled.</p>{% endif %}
-<h2>Before launch</h2>
-<p>This is a starter disclosure, not legal advice. The site owner needs to add a contact method and review this page against their actual configuration and applicable requirements before launch.</p>
+<h2>Getting in touch</h2>
+<p>For questions about this site or your information, email <a href="mailto:{{ site.email }}">{{ site.email }}</a>. If you email me, your message and email address are processed by the email service used to receive and reply to it. Sending a message does not add you to a mailing list.</p>
+<h2>Links to other websites</h2>
+<p>Profile links and RSS-reader recommendations take you to other websites, which have their own privacy policies. No external social widgets are embedded here.</p>

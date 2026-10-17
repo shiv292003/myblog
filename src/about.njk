@@ -1,0 +1,24 @@
+---
+layout: layouts/page.njk
+title: A little about me.
+eyebrow: Behind Quest
+description: Curiosity, clarity, and the world as I see it.
+permalink: /about/
+---
+<figure class="author-portrait">
+  <img src="/assets/portrait.png" alt="Shiv Shakti Sharma giving two thumbs up" width="480" height="480" decoding="async">
+  <figcaption>{{ site.author }}<br>A face behind the words.</figcaption>
+</figure>
+<p>I'm <strong>{{ site.author }}</strong>. Welcome to {{ site.title }}.</p>
+{% for paragraph in site.about %}<p>{{ paragraph }}</p>{% endfor %}
+
+<h2>The threads I'm following</h2>
+<ul>{% for section in sections %}<li><a href="/#section-{{ section.id }}">{{ section.title }}</a> — {{ section.description }}</li>{% endfor %}</ul>
+
+<h2>Let's talk</h2>
+<p>If something here sparks a thought, I'd love to hear it. Write to <a href="mailto:{{ site.email }}">{{ site.email }}</a>, or find me elsewhere:</p>
+<ul>{% for link in site.links %}<li><a href="{{ link.url }}" rel="me">{{ link.label }}</a></li>{% endfor %}</ul>
+
+<h2>Stay curious</h2>
+<p>Browse <a href="/">the notebook</a>, visit <a href="/archive/">the archive</a>, or <a href="/follow/">follow Quest</a> to hear about new writing through RSS.</p>
+<p>This is a small, independent website built with Eleventy, HTML, and CSS. No infinite feed. Just pages you can return to.</p>

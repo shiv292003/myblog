@@ -1,8 +1,16 @@
-# Margin notes
+# Quest
+
+**On a quest. The world as I see it.** A personal blog by Shiv Shakti Sharma.
 
 A personal blog styled as a black-and-white web notebook: dotted paper, an original ink-style drawing, serif writing, monospace labels, and raised old-web buttons. Built with Eleventy 3, Nunjucks, Markdown, and plain CSS. The visual design and article navigation do not require JavaScript.
 
-**Current status:** local starter, not deployed. The six published articles, site name, section names, and About page are samples. Newsletter, comments, and analytics stay off until configured.
+**Current version:** Quest, with an About portrait, Books / Technology / Projects / Life topics, and a friendly [Follow page](src/follow.njk). All six sample articles are drafts, so the site has no published articles. Newsletter, comments, and analytics remain disabled. The owner reviewed the local preview and approved publishing this update.
+
+**Deployment:** [myblog-wheat-nu.vercel.app](https://myblog-wheat-nu.vercel.app/) is connected to the GitHub main branch. Pushing may automatically redeploy Vercel. Production allows search indexing. The historical live checks below refer to the first "Margin notes" deployment; verify the Quest identity, portrait, RSS guide, and removed sample URLs after publishing this update.
+
+Local Quest verification: 16 automated tests and 25 responsive browser layout cases passed. RSS and sitemap parsed correctly, all sample pages were absent, the portrait loaded, and the Follow guide's navigation/address selection and visible keyboard skip link worked. This does not replace checks after the new deployment.
+
+Live checks on 2026-10-17 verified the main pages, all six article URLs, assets, navigation, 15 responsive layout cases, RSS/sitemap domain URLs, and custom HTTP 404 responses including draft exclusion. The private Vercel build log and selected Node runtime have not yet been inspected. See [the context record](PROJECT_CONTEXT.md) for exact results and limitations.
 
 **Continuing in a new chat:** read [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) for repository identification, decisions, file-by-file review, verification results, and pending work. Open the current Git repository rather than an older local prototype.
 
@@ -46,16 +54,16 @@ There is no custom backend or database. Do not add service secrets to client-sid
 
 ## Make it yours
 
-- Edit the title and description in [site data](src/_data/site.js).
+- Edit the title, author, tagline, description, biography, public email, and profile links in [site data](src/_data/site.js).
 - Edit the introduction and margin note in [the homepage](src/index.njk).
-- Replace [the About page](src/about.md) with your own introduction.
+- Adjust [the About page](src/about.njk), which renders the shared biography and links.
 - Rename and reorder themes in [section data](src/_data/sections.js). Each post must reference a valid section ID.
 - Adjust colors, type, and spacing in [the stylesheet](src/assets/style.css).
 - The authored palette is strictly black and white, including code styling and the favicon. Dots, hatching, borders, and type weight supply texture instead of extra colors. The [notebook drawing](src/assets/notebook.svg) is an original lightweight SVG; no Three.js, external fonts, or animation library is needed.
-- Edit the sample blogroll and margin note in [the homepage](src/index.njk). External links are ordinary links, not third-party embeds.
-- Replace the `m.` monogram in [the base layout](src/_includes/layouts/base.njk) and [favicon](src/assets/favicon.svg) if you change the identity.
-- Replace/delete the sample articles. The sample disclaimer disappears when no published articles have `sample: true`.
-- Review [privacy disclosures](src/privacy.njk) and add your contact information before launch.
+- Profile links on the homepage and About page use shared site data. External links are ordinary links, not third-party embeds.
+- The `Q` monogram comes from site data; also update the [favicon](src/assets/favicon.svg) if changing it.
+- Keep the sample articles as local examples, or delete them. They are all `draft: true` and absent from generated pages, RSS, and the sitemap.
+- Review [privacy disclosures](src/privacy.njk) whenever services change. The public contact is `shivshakti292003@gmail.com`.
 
 ## Write an article
 
@@ -66,7 +74,7 @@ Create a Markdown file directly inside [src/posts](src/posts) using this format:
 title: A thought worth keeping
 slug: a-thought-worth-keeping
 date: 2026-10-15
-section: living
+section: life
 description: A short summary for the index, RSS, and search previews.
 draft: true
 featured: false
@@ -80,7 +88,7 @@ Your article begins here.
 Write naturally. **Bold**, *italics*, lists, links, and fenced code blocks work.
 ```
 
-- Supported sections initially: `living`, `learning`, `making`.
+- Supported sections: `books`, `technology`, `projects`, `life`.
 - Set `draft: false` to publish. Future dates do **not** schedule publication.
 - The stable URL comes from the slug, not the filename or title. Keep it unchanged after publishing unless you also configure a redirect in Vercel.
 - Dates use UTC. Use a YAML date, not a quoted relative expression.
@@ -90,9 +98,9 @@ Write naturally. **Bold**, *italics*, lists, links, and fenced code blocks work.
 - Restart the dev server after deleting an article or changing it to a draft. A restart/full build cleans stale output.
 - A draft is excluded from output, not hidden from your Git repository's readers. Use a private source repository if needed.
 
-Tests derive published article counts, URLs, archive years, and feed order from generated output rather than requiring specific sample titles or a fixed post count. Code rendering and configured integrations use an in-memory template fixture that is never published. The included `draft-example` remains an explicit draft-exclusion check; update that check if you intentionally publish that particular template.
+Tests derive published article counts, URLs, archive years, and feed order from generated output rather than requiring samples to stay published. Code rendering and configured integrations use an in-memory template fixture that is never published. The seven example slugs are explicitly checked for exclusion; update that check only if intentionally publishing one. New articles can use new slugs without changing the tests. Empty-state checks apply while there are no published articles.
 
-The samples exercise long titles, lists, a blockquote, an SVG figure with a caption, code, a table, and a second archive year. They are clearly labeled as sample writing, not claims about the site owner.
+The retained draft samples demonstrate long titles, lists, a blockquote, an SVG figure with a caption, code, a table, and a second archive year. They are examples, not claims about the site owner. Drafts in a public Git repository are still readable there; unpublishing cannot erase earlier copies from readers, search caches, or old deployments.
 
 ### Images
 
@@ -105,6 +113,12 @@ Use descriptive alt text. For explicit dimensions and lazy loading:
 ```
 
 Only use images you own or have permission to publish. The site uses system fonts and no stock images.
+
+The [About portrait](src/assets/portrait.png) is derived locally from the owner's supplied photo: a square crop, 480 by 480 pixels, with black/white error-diffusion dots. The web copy is 55,313 bytes and has no original EXIF metadata. The original photo is not included in the repository. No image-processing library is needed at build time; the finished PNG is served as a static asset with dimensions and descriptive alt text.
+
+### Following the blog
+
+Human-facing Follow/RSS buttons open `/follow/`, which explains RSS, offers a selectable feed address, and explains why browsers display XML. The raw summary feed stays at `/feed.xml`, and RSS autodiscovery still points to it. The Follow page is included in the sitemap. The feed is valid with zero entries and gains entries when real articles are published. Its absolute address uses the same configured origin as canonical links.
 
 ## Connect optional services
 

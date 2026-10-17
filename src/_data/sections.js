@@ -1,7 +1,8 @@
 const sections = [
-  { id: "living", title: "On living", number: "01", description: "Small observations from an ordinary life." },
-  { id: "learning", title: "On learning", number: "02", description: "Questions, discoveries, and changing my mind." },
-  { id: "making", title: "On making", number: "03", description: "The things we build, and what they teach us." }
+  { id: "books", title: "Books", number: "01", description: "What I read, and the questions it leaves me with." },
+  { id: "technology", title: "Technology", number: "02", description: "Exploring how things work, and what they change." },
+  { id: "projects", title: "Projects", number: "03", description: "Things I build, experiments, and lessons along the way." },
+  { id: "life", title: "Life", number: "04", description: "People, perspectives, and the world as I see it." }
 ];
 
 export default function () {

@@ -2,10 +2,10 @@
 title: Small things worth keeping
 slug: small-things-worth-keeping
 date: 2025-12-29
-section: living
+section: life
 description: An end-of-year inventory without a scorecard.
 sample: true
-draft: false
+draft: true
 ---
 An inventory doesn't have to be a list of achievements.
 

@@ -3,10 +3,10 @@ layout: layouts/base.njk
 ---
 <section class="intro" aria-labelledby="intro-title">
   <div class="intro-main">
-    <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>One person. A few thoughts. An open notebook.</p>
-    <h1 id="intro-title">Thinking out loud.<br><em>Writing it down.</em></h1>
-    <p class="intro-description">A small collection of essays, everyday observations, and things I'm still figuring out. No feed to keep up with. Just a few pages to get lost in.</p>
-    <a class="text-link" href="/about/">Meet the person behind the pages <span aria-hidden="true">↗</span></a>
+    <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>{{ site.author }} / an open notebook</p>
+    <h1 id="intro-title">On a quest.<br><em>The world as I see it.</em></h1>
+    <p class="intro-description">I write to find clarity, explore what interests me, and share the world as I see it. Books, technology, projects, life—and the connections in between.</p>
+    <a class="text-link" href="/about/">A little about me <span aria-hidden="true">↗</span></a>
   </div>
   <div class="notebook-sketch">
     <img src="/assets/notebook.svg" width="300" height="240" alt="" fetchpriority="low">
@@ -26,21 +26,19 @@ layout: layouts/base.njk
 <div class="home-columns">
   <section class="index-section" aria-labelledby="index-title">
     <div class="section-heading"><div><p class="eyebrow">01 / The writing</p><h2 id="index-title">From the notebook.</h2></div><a class="text-link archive-link" href="/archive/">View archive <span aria-hidden="true">→</span></a></div>
+    {% if not collections.posts.length %}<p class="empty-state">The first essays are on their way. These are the threads I'll be following.<br><a href="/follow/">Follow Quest for new writing →</a></p>{% endif %}
     {% for section in sections %}
     {% set posts = collections.posts | inSection(section.id) %}
-    {% if posts.length %}
     <section class="theme-group" aria-labelledby="section-{{ section.id }}">
       <div class="theme-description"><span class="section-number">{{ section.number }}</span><h3 id="section-{{ section.id }}">{{ section.title }}</h3></div>
       <p class="theme-summary">{{ section.description }}</p>
-      <ul class="post-list">
+      {% if posts.length %}<ul class="post-list">
         {% for post in posts %}
         <li><a class="post-row" href="{{ post.url }}"><div><h4>{{ post.data.title }}</h4><p>{{ post.data.description }}</p></div><span class="post-row-end"><time datetime="{{ post.date | isoDate }}">{{ post.date | dateLabel }}</time><span class="row-arrow" aria-hidden="true">↗</span></span></a></li>
         {% endfor %}
-      </ul>
+      </ul>{% endif %}
     </section>
-    {% endif %}
     {% endfor %}
-    {% if not collections.posts.length %}<p class="empty-state">The notebook is open. The first page is still being written.</p>{% endif %}
     {% if collections.posts | hasSamples %}<p class="sample-disclaimer"><span aria-hidden="true">[*]</span> These are sample articles. A few test pages before the real writing begins.</p>{% endif %}
   </section>
 
@@ -48,18 +46,17 @@ layout: layouts/base.njk
     <section class="side-note" aria-labelledby="margin-title">
       <p class="eyebrow">02 / In the margin</p>
       <h2 id="margin-title">A note to self.</h2>
-      <p class="hand-note">Pay attention.<br>Stay curious.<br>Make something<br>that feels like you.</p>
+      <p class="hand-note">Read widely.<br>Stay curious.<br>Write it down.<br>See it differently.</p>
       <div class="ink-trail" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
       <p class="side-note-caption">Not a manifesto.<br>Just a useful reminder.</p>
     </section>
     <section class="elsewhere" aria-labelledby="elsewhere-title">
-      <p class="eyebrow">03 / The wider web</p>
-      <h2 id="elsewhere-title">Good company.</h2>
-      <p>A few corners that inspired this one.</p>
+      <p class="eyebrow">03 / Elsewhere</p>
+      <h2 id="elsewhere-title">Find me here.</h2>
+      <p>Thoughtful feedback and conversations are always welcome.</p>
       <ul>
-        <li><a href="https://www.paulgraham.com/articles.html">Paul Graham <span aria-hidden="true">↗</span></a><span>Essays &amp; ideas</span></li>
-        <li><a href="https://jvns.ca/">Julia Evans <span aria-hidden="true">↗</span></a><span>Learning out loud</span></li>
-        <li><a href="https://www.kitchensoap.com/">Kitchen Soap <span aria-hidden="true">↗</span></a><span>People &amp; systems</span></li>
+        {% for link in site.links %}<li><a href="{{ link.url }}" rel="me">{{ link.label }} <span aria-hidden="true">↗</span></a></li>{% endfor %}
+        <li><a href="mailto:{{ site.email }}">Say hello <span aria-hidden="true">↗</span></a></li>
       </ul>
     </section>
     <div class="small-print"><span class="asterisk" aria-hidden="true">✳</span><p>This isn't an endless feed.<br>It's a small place on purpose.</p></div>

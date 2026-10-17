@@ -2,10 +2,10 @@
 title: Keeping questions, not just answers
 slug: keeping-questions
 date: 2026-10-08
-section: learning
+section: life
 description: A notebook is useful even when you haven't figured anything out yet.
 sample: true
-draft: false
+draft: true
 ---
 An answer is satisfying to write down. It has edges. You can underline it and move on.
 

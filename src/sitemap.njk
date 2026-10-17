@@ -4,7 +4,7 @@ eleventyExcludeFromCollections: true
 ---
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  {% for path in ["/", "/archive/", "/about/", "/privacy/"] %}
+  {% for path in ["/", "/archive/", "/about/", "/follow/", "/privacy/"] %}
   <url><loc>{{ path | absoluteUrl(site.url) | xml | safe }}</loc></url>
   {% endfor %}
   {% for post in collections.posts %}

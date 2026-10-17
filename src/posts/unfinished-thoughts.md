@@ -2,10 +2,10 @@
 title: A notebook for things I haven't figured out yet
 slug: unfinished-thoughts
 date: 2026-10-17
-section: learning
+section: life
 description: On keeping the rough edges, asking better questions, and leaving a little space on the page.
 sample: true
-draft: false
+draft: true
 ---
 A blank notebook makes a surprisingly large promise. It suggests that the next thing you write will be worth keeping.
 

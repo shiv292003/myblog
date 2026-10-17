@@ -98,10 +98,77 @@ test("home indexes every published article under a known section", async () => {
 });
 
 test("drafts are absent from pages, archive, feed and sitemap", async () => {
+  const hiddenSlugs = [
+    "draft-example", "a-small-corner", "ordinary-afternoon", "keeping-questions",
+    "make-less", "unfinished-thoughts", "small-things-worth-keeping"
+  ];
   for (const path of ["index.html", join("archive", "index.html"), "feed.xml", "sitemap.xml"]) {
-    assert.doesNotMatch(await read(path), /draft-example|An unfinished thought/);
+    const content = await read(path);
+    for (const slug of hiddenSlugs) assert.ok(!content.includes(`/writing/${slug}/`), `${path} exposes ${slug}`);
+    assert.doesNotMatch(content, /An unfinished thought|class="sample-disclaimer"/);
   }
-  assert.equal(existsSync(join(output, "writing", "draft-example", "index.html")), false);
+  for (const slug of hiddenSlugs) {
+    assert.equal(existsSync(join(output, "writing", slug, "index.html")), false, `${slug} must remain unpublished`);
+  }
+});
+
+test("Quest identity, contact details and all four topics are published consistently", async () => {
+  const home = await read("index.html");
+  const about = await read(join("about", "index.html"));
+  const privacy = await read(join("privacy", "index.html"));
+  const follow = await read(join("follow", "index.html"));
+  for (const html of [home, about, privacy, follow]) {
+    assert.match(html, /Quest/);
+    assert.match(html, /Shiv Shakti Sharma/);
+    assert.match(html, /mailto:shivshakti292003@gmail\.com/);
+    assert.doesNotMatch(html, /Margin notes|sssharma292003@gmail\.com/);
+  }
+  for (const html of [home, about]) {
+    for (const url of [
+      "https://www.linkedin.com/in/shiv-shakti-sharma-4830931b1/",
+      "https://github.com/shiv292003", "https://x.com/shiv_buildsfail"
+    ]) assert.ok(html.includes(`href="${url}"`));
+  }
+  const sectionIds = [...home.matchAll(/<h3 id="section-([^"]+)"/g)].map((match) => match[1]);
+  assert.deepEqual(sectionIds, ["books", "technology", "projects", "life"]);
+  assert.match(about, /src="\/assets\/portrait\.png"[^>]*width="480" height="480"/);
+  assert.match(about, /alt="Shiv Shakti Sharma giving two thumbs up"/);
+  const portrait = await readFile(join(output, "assets", "portrait.png"));
+  assert.ok(portrait.length < 75_000, "The portrait should remain under 75 KB");
+  assert.deepEqual(portrait.subarray(0, 8), Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]));
+  assert.equal(portrait.readUInt32BE(16), 480);
+  assert.equal(portrait.readUInt32BE(20), 480);
+});
+
+test("human follow links open a guide while RSS autodiscovery still points to XML", async () => {
+  for (const path of ["index.html", join("about", "index.html"), join("archive", "index.html"), join("follow", "index.html")]) {
+    const html = await read(path);
+    assert.match(html, /<link rel="alternate" type="application\/rss\+xml"[^>]*href="\/feed\.xml"/);
+    assert.match(html, /class="feed-link" href="\/follow\/"/);
+    assert.match(html, /class="web-badge" href="\/follow\/"><b>RSS<\/b>/);
+    if (path !== join("follow", "index.html")) assert.doesNotMatch(html, /<a\b[^>]*href="\/feed\.xml"/);
+  }
+  const follow = await read(join("follow", "index.html"));
+  const feed = await read("feed.xml");
+  const address = follow.match(/id="feed-address"[^>]*value="([^"]+)"/)?.[1];
+  assert.ok(address, "The reader needs a copyable feed address");
+  assert.match(follow, /href="\/feed\.xml">Open the raw RSS feed/);
+  assert.match(follow, /XML has no style information/);
+  assert.ok(feed.includes(`href="${address}"`), "The guide and RSS self-link must agree");
+  assert.match(feed, /<title>Quest<\/title>/);
+  assert.match(await read("sitemap.xml"), /<loc>[^<]+\/follow\/<\/loc>/);
+});
+
+test("an empty notebook has helpful pages and an empty RSS channel", async () => {
+  if ((await publishedPages()).length) return;
+  const home = await read("index.html");
+  assert.match(home, /The first essays are on their way/);
+  assert.doesNotMatch(home, /class="featured"|class="post-row"/);
+  assert.match(await read(join("archive", "index.html")), /The archive is empty for now/);
+  assert.match(await read(join("follow", "index.html")), /first articles haven't been published yet/);
+  const feed = await read("feed.xml");
+  assert.match(feed, /<channel>[\s\S]*<\/channel>/);
+  assert.doesNotMatch(feed, /<item>/);
 });
 
 test("archive and RSS contain every published article in date order", async () => {
@@ -213,7 +280,7 @@ test("local and preview HTML never activates configured live services", async ()
       GISCUS_CATEGORY: "Notes", GISCUS_CATEGORY_ID: "DIC_test"
     }, async () => {
       const pages = await renderingFixture().toJSON();
-      for (const url of ["/", "/test-render/", "/privacy/"]) {
+      for (const url of ["/", "/test-render/", "/privacy/", "/follow/"]) {
         const html = pages.find((page) => page.url === url).content;
         assert.match(html, /name="robots" content="noindex, nofollow"/);
         assert.doesNotMatch(html, /data-goatcounter|embed-subscribe|id="load-comments"|src="\/assets\/comments.js"/);
@@ -221,6 +288,7 @@ test("local and preview HTML never activates configured live services", async ()
       const privacy = pages.find((page) => page.url === "/privacy/").content;
       assert.match(privacy, /No analytics script is currently enabled/);
       assert.match(privacy, /Comments are not currently enabled/);
+      assert.match(pages.find((page) => page.url === "/follow/").content, /Email subscriptions aren't enabled yet/);
       assert.match(pages.find((page) => page.url === "/robots.txt").content, /Disallow: \//);
     });
   }
@@ -248,6 +316,10 @@ test("production build wires configured services and canonical URLs without cont
     assert.match(post, /data-category="Notes &amp; &quot;questions&quot;"/);
     assert.match(post, /id="load-comments"/);
     assert.doesNotMatch(post, /src="https:\/\/giscus.app\/client.js"/);
+    const follow = pages.find((page) => page.url === "/follow/").content;
+    assert.match(follow, /value="https:\/\/blog\.example\/feed\.xml"/);
+    assert.match(follow, /href="\/#newsletter"/);
+    assert.doesNotMatch(follow, /Email subscriptions aren't enabled yet/);
     assert.match(pages.find((page) => page.url === "/robots.txt").content, /Allow: \//);
   });
 });

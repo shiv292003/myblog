@@ -1,0 +1,37 @@
+---
+layout: layouts/page.njk
+title: Follow Quest.
+eyebrow: Stay in the loop
+description: New writing, in your own time. A simple guide to following this blog.
+permalink: /follow/
+---
+<p>You don't need to keep checking this site for new articles. An <strong>RSS reader</strong> can bring them to you.</p>
+{% if not collections.posts.length %}<p class="follow-notice">The first articles haven't been published yet. You can add the feed now; new entries will appear in your reader when I publish.</p>{% endif %}
+
+<h2>What is RSS?</h2>
+<p>RSS is a regularly updated list of posts that reading apps understand. You choose the blogs you follow, and your reader collects their new entries in one place. No account on this website or email signup is needed.</p>
+<p>This feed includes article titles, short summaries, and links to read the full posts here.</p>
+
+<h2>Follow in three steps</h2>
+<ol>
+  <li>Open an RSS reader you like, such as <a href="https://feedly.com/">Feedly</a>, <a href="https://www.inoreader.com/">Inoreader</a>, or another app that supports RSS.</li>
+  <li>Copy the feed address below and paste it into your reader's <strong>Add feed</strong> or <strong>Follow website</strong> option.</li>
+  <li>Save it. Your reader will check for new articles.</li>
+</ol>
+<div class="feed-address-box">
+  <label for="feed-address">Quest's RSS feed address — select and copy</label>
+  <input id="feed-address" class="feed-address" type="text" value="{{ '/feed.xml' | absoluteUrl(site.url) }}" readonly spellcheck="false" aria-describedby="feed-help">
+  <p id="feed-help" class="fine-print">On a computer, click the field and select all to copy. On a phone, touch and hold the address to select it.</p>
+  <a class="retro-button" href="/feed.xml">Open the raw RSS feed <span aria-hidden="true">↗</span></a>
+</div>
+
+<h2>Why did I see an XML page?</h2>
+<p>That's the raw feed, not a broken page. It's meant for a reading app. Browsers often show a message saying the XML has no style information; that message is normal. Copy the feed address into your reader rather than trying to read the XML yourself.</p>
+
+<h2>Prefer email?</h2>
+{% if integrations.buttondown and site.isProduction %}
+<p>You can also <a href="/#newsletter">subscribe by email on the homepage</a>.</p>
+{% else %}
+<p>Email subscriptions aren't enabled yet. For now, RSS is the way to receive new-post updates.</p>
+{% endif %}
+<p>For a conversation instead of a subscription, <a href="mailto:{{ site.email }}">send me a note</a>. A personal email does not automatically subscribe you to anything.</p>
