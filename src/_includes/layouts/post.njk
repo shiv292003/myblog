@@ -1,0 +1,33 @@
+---
+layout: layouts/base.njk
+isPost: true
+---
+<article class="article">
+  <header class="article-header">
+    <a class="back-link" href="/#section-{{ section }}">← {{ section | sectionName }}</a>
+    <h1>{{ title }}</h1>
+    <p class="article-deck">{{ description }}</p>
+    <p class="post-meta"><time datetime="{{ date | isoDate }}">{{ date | dateLabel }}</time><span aria-hidden="true">/</span>{{ content | readingTime }} min read<span aria-hidden="true">/</span>A page from the notebook</p>
+    {% if sample %}<p class="sample-label">Sample article · Replace this with your own writing before launch.</p>{% endif %}
+  </header>
+  <div class="prose">{{ content | safe }}</div>
+  <div class="article-end"><span aria-hidden="true">● ● ●</span><p>End of this thought. Not the conversation.</p><a class="retro-button" href="/archive/">Back to the archive <span aria-hidden="true">←</span></a></div>
+</article>
+{% include "newsletter.njk" %}
+<section class="comments" aria-labelledby="comments-title">
+  <p class="eyebrow">A conversation, if you'd like</p>
+  <h2 id="comments-title">In the margins</h2>
+  {% if integrations.giscus %}
+  <p>Comments are hosted on GitHub Discussions. A GitHub account is needed to join in.</p>
+  <button class="comments-button" id="load-comments" type="button"
+    data-repo="{{ integrations.giscus.repo }}" data-repo-id="{{ integrations.giscus.repoId }}"
+    data-category="{{ integrations.giscus.category }}" data-category-id="{{ integrations.giscus.categoryId }}"
+    data-term="{{ slug }}">Load comments</button>
+  <p id="comments-status" role="status" class="fine-print"></p>
+  <div class="giscus"></div>
+  <noscript><p>Comments need JavaScript. You can also visit <a href="https://github.com/{{ integrations.giscus.repo }}/discussions">GitHub Discussions</a>.</p></noscript>
+  <script src="/assets/comments.js" defer></script>
+  {% else %}
+  <p>Comments aren't connected yet. For now, this space is just for reading.</p>
+  {% endif %}
+</section>

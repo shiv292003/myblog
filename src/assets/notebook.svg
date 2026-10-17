@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 240" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
+  <defs>
+    <pattern id="dots" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".7" fill="#000" stroke="none"/></pattern>
+    <pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><path d="M0 0V5" stroke-width="1"/></pattern>
+  </defs>
+  <ellipse cx="152" cy="209" rx="96" ry="13" fill="url(#dots)" stroke="none"/>
+  <path d="M76 60 201 40 225 188 99 209Z" fill="#fff" stroke-width="1.7"/>
+  <path d="m82 58 116-16 23 142-119 19Z" fill="url(#dots)" stroke-width="1.2"/>
+  <path d="m68 51 126-17 24 149-126 18Z" fill="#fff" stroke-width="2"/>
+  <path d="m73 53 117-15 23 141-117 18M88 49l24 148" stroke-width=".8"/>
+  <path d="m68 65-8 1q-9-6 0-11l10-1m1 29-8 1q-9-6 0-11l10-1m1 29-8 1q-9-6 0-11l10-1m1 29-8 1q-9-6 0-11l10-1m1 29-8 1q-9-6 0-11l10-1m1 29-8 1q-9-6 0-11l10-1m1 29-8 1q-9-6 0-11l10-1" stroke-width="1.6"/>
+  <path d="m109 77 56-8m-54 14 67-9m-62 32 54-8m-52 15 66-10m-64 16 49-7m-47 15 64-10" stroke-width="1.3"/>
+  <path d="m128 160 14-18 15 12 17-24 17 22-57 9Z" stroke-width="1.4"/>
+  <circle cx="131" cy="133" r="4" stroke-width="1.1"/>
+  <path d="m229 64 13 6-58 122-12 12 1-17Z" fill="#fff" stroke-width="1.8"/>
+  <path d="m229 64 6-12q2-4 6-2l6 3q4 2 2 6l-7 11Z" fill="url(#hatch)" stroke-width="1.6"/>
+  <path d="m233 69-56 121m61-118-57 120m-8-5 11 5m-12 12 4-7 3 2Z" stroke-width="1.1"/>
+  <path d="m37 137-17 4m22 6-11 10m8-31-10-5m193-94 5-12m3 16 11-6" stroke-width="1.5"/>
+  <path d="m251 125 3 11 12 3-12 4-3 12-4-12-11-4 11-3Z" stroke-width="1.5"/>
+  <circle cx="50" cy="39" r="2" fill="#000"/>
+  <circle cx="251" cy="94" r="1.5" fill="#000"/>
+  <circle cx="39" cy="181" r="1" fill="#000"/>
+  <path d="M25 83q-9-20 6-27t16 8q-2 17-15 13m-2 12-5-6 8-1" stroke-width="1.2"/>
+</svg>

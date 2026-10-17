@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="{{ site.language }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if title %}{{ title }} — {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{{ description or site.description }}">
+  {% if site.noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
+  <link rel="canonical" href="{{ page.url | absoluteUrl(site.url) }}">
+  <meta property="og:title" content="{{ title or site.title }}">
+  <meta property="og:description" content="{{ description or site.description }}">
+  <meta property="og:type" content="{% if isPost %}article{% else %}website{% endif %}">
+  <meta property="og:url" content="{{ page.url | absoluteUrl(site.url) }}">
+  <meta property="og:site_name" content="{{ site.title }}">
+  <meta name="twitter:card" content="summary">
+  {% if isPost %}<meta property="article:published_time" content="{{ date | isoDate }}">{% endif %}
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="/feed.xml">
+  {% if integrations.goatcounter and not site.noindex %}
+  <script data-goatcounter="https://{{ integrations.goatcounter }}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  {% endif %}
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="site-shell">
+    <div class="edition-bar"><span>A personal website / est. 2026</span><span>Independent. Unhurried.</span></div>
+    <header class="site-header">
+      <div class="masthead"><a class="wordmark" href="/" aria-label="{{ site.title }} home"><span class="brand-mark" aria-hidden="true">m.</span>{{ site.title }}.</a><p>Personal essays &amp; other loose ends.</p></div>
+      <nav aria-label="Main navigation">
+        <a href="/" {% if page.url == "/" %}aria-current="page"{% endif %}>Home</a>
+        <a href="/archive/" {% if page.url == "/archive/" %}aria-current="page"{% endif %}>Archive</a>
+        <a href="/about/" {% if page.url == "/about/" %}aria-current="page"{% endif %}>About</a>
+        <a class="feed-link" href="/feed.xml">RSS <span aria-hidden="true">↗</span></a>
+      </nav>
+    </header>
+    <main id="main">{{ content | safe }}</main>
+    <footer class="site-footer">
+      <div><a class="footer-title" href="/">{{ site.title }}.</a><p>Best viewed at your own pace.</p></div>
+      <div class="web-badges"><a class="web-badge" href="/feed.xml"><b>RSS</b><span>stay in the loop</span></a><a class="web-badge" href="/about/"><b>WWW</b><span>made by hand</span></a></div>
+      <div class="footer-right"><p>No rush. Come back anytime.</p><div><span>© {{ site.year }}</span><a href="/privacy/">Privacy</a><a href="#main">Back to top ↑</a></div></div>
+    </footer>
+  </div>
+</body>
+</html>

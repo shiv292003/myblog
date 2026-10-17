@@ -1,0 +1,16 @@
+<section class="newsletter" aria-labelledby="newsletter-title">
+  <div class="newsletter-copy"><span class="envelope" aria-hidden="true">✉</span><div><p class="eyebrow">The occasional dispatch</p><h2 id="newsletter-title">A letter when there's something to say.</h2><p>New writing. Occasionally. No noise in between.</p></div></div>
+  <div class="newsletter-action">
+    {% if integrations.buttondown %}
+    <form action="https://buttondown.com/api/emails/embed-subscribe/{{ integrations.buttondown }}" method="post">
+      <label for="newsletter-email">Get new posts by email</label>
+      <div class="form-row"><input id="newsletter-email" type="email" name="email" placeholder="you@example.com" autocomplete="email" required><button type="submit">Subscribe <span aria-hidden="true">→</span></button></div>
+      <input type="hidden" name="embed" value="1">
+      <p class="fine-print">Via Buttondown. Unsubscribe anytime. <a href="/privacy/">Privacy</a></p>
+    </form>
+    {% else %}
+    <a class="retro-button" href="/feed.xml">Follow via RSS <span aria-hidden="true">↗</span></a>
+    <p class="fine-print">Email isn't connected yet.<br>The RSS feed is ready to read.</p>
+    {% endif %}
+  </div>
+</section>

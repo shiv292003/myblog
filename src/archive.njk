@@ -1,0 +1,20 @@
+---
+layout: layouts/base.njk
+title: All writing
+description: Every published article, newest first.
+permalink: /archive/
+---
+<section class="archive-page">
+  <header class="article-header"><p class="eyebrow">The collected pages</p><h1>All writing<span class="wordmark-dot">.</span></h1><p class="article-deck">A chronological trail of thoughts. For a different path, <a href="/">browse by theme</a>.</p></header>
+  {% set currentYear = "" %}
+  {% for post in collections.posts %}
+    {% set postYear = post.date | year %}
+    {% if postYear != currentYear %}
+      {% if not loop.first %}</ul></section>{% endif %}
+      <section class="archive-year"><h2>{{ postYear }}</h2><ul class="post-list">
+      {% set currentYear = postYear %}
+    {% endif %}
+    <li><a class="post-row" href="{{ post.url }}"><div><span class="eyebrow">{{ post.data.section | sectionName }}</span><h3>{{ post.data.title }}</h3></div><span class="post-row-end"><time datetime="{{ post.date | isoDate }}">{{ post.date | dateLabel }}</time><span aria-hidden="true">↗</span></span></a></li>
+    {% if loop.last %}</ul></section>{% endif %}
+  {% else %}<p>The archive is empty for now. Something will find its way here.</p>{% endfor %}
+</section>
