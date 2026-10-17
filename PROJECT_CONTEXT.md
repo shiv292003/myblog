@@ -2,9 +2,21 @@
 
 Last updated: 2026-10-17.
 
-**Release snapshot:** personalization to **Quest**, a friendly RSS guide, sample hiding, and an owner-supplied portrait are implemented and locally verified. The user reviewed the local preview and explicitly said **"OKAY PUSH IT"** on 2026-10-17, authorizing this update's commit and push. A push to main may automatically redeploy Vercel. At preparation of this snapshot, the last verified live deployment was still Margin notes; verify the new release after pushing. Future publishing changes still require permission.
+**Latest status:** **Quest is live and verified** at https://myblog-wheat-nu.vercel.app/ with the approved identity, portrait, RSS guide and no published sample articles. The user reviewed the local preview and explicitly said **"OKAY PUSH IT"** on 2026-10-17. Release code was committed as `d2f527fc74a3f41bdcb615a99adf47d3ed62528e`, pushed to GitHub main, and local/remote IDs were verified equal. Vercel then served the updated content. Future publishing changes still require permission.
 
-## Quest personalization: current local work
+## Quest release verification: 2026-10-17
+
+- Home, About, Follow, Archive and Privacy returned HTTP 200 with the approved author, correct production canonical URLs and no noindex directive.
+- Live RSS and sitemap parsed successfully: zero RSS items, five public sitemap pages including `/follow/`, all sitemap URLs on the production origin.
+- The guide displays `https://myblog-wheat-nu.vercel.app/feed.xml`, not a local preview address.
+- All six former sample URLs and the original draft URL returned HTTP 404 with the custom not-found page.
+- Six live layout cases passed: Home, About and Follow at 375px and 1280px, with no horizontal page overflow. The 480px portrait loaded on both tested widths.
+- The footer RSS badge navigated to the HTML Follow guide.
+- Source regression tests passed all 16 cases immediately before the release push.
+- Private Vercel logs, runtime and exact cloud commit metadata were not inspected; these conclusions are based on the verified GitHub push and the publicly served content.
+- This documentation-only follow-up records the completed release; it makes no application changes.
+
+## Quest personalization: approved release
 
 - User approved local implementation/testing, and asked to hide every sample article until real writing is added.
 - Approved identity: **Shiv Shakti Sharma**, blog **Quest**, tagline **"On a quest. The world as I see it."**
@@ -28,7 +40,7 @@ Last updated: 2026-10-17.
 - The test preview was stopped, then a new user-requested preview was started at `http://localhost:8081/` and verified responsive. It was left running for review (`quest-user-preview`); check whether it is still available before starting another server or running a clean build.
 - Immediately before publishing, `npm test` again passed all 16 tests and `git diff --check` passed. Only the approved personalization, portrait, samples, tests and documentation were in the changed-file list.
 
-The deployment/readiness records below describe the earlier public version, not this unpublished Quest update.
+The deployment/readiness records below describe the earlier sample version; the Quest verification above supersedes them for current public content.
 
 ## First live deployment: verified 2026-10-17
 
@@ -364,14 +376,11 @@ All 33 project-owned files existing at the time of the initial review were revie
 
 ## Next work, in order
 
-1. Commit and push this approved update; verify local and remote commit IDs rather than inferring upload from this snapshot.
-2. Check that Vercel has published the new version; the user has authorized this release, not unrelated future publishing changes.
-3. Verify the new live identity, portrait, Follow guide, raw feed, and HTTP 404 for previously published sample URLs after redeployment.
-4. Review the private Vercel build log/runtime with the user, without asking for secrets.
-5. Add the user's first real article when supplied. Custom domain remains optional.
-6. Keep optional service identifiers unset. Finish comment recovery before enabling comments.
-7. Connect service accounts/domain only with authorization, and test real signup, unsubscribe, comments and analytics flows.
+1. Add the user's first real article when supplied; obtain approval before publishing further changes.
+2. Review the private Vercel build log/runtime with the user, without asking for secrets.
+3. Keep optional service identifiers unset. Finish comment recovery before enabling comments.
+4. Connect service accounts or an optional custom domain only with authorization, and test real signup, unsubscribe, comments and analytics flows.
 
-Unresolved at release preparation: confirmation of the new GitHub upload/deployment, first real writing, optional custom domain, service account identifiers, and private cloud build-log/runtime confirmation. Owner identity, biography, topics, contact, portrait and publishing this release are approved. The production origin is verified; a custom domain is optional.
+Unresolved: first real writing, optional custom domain, service account identifiers, and private cloud build-log/runtime confirmation. Owner identity, biography, topics, contact, portrait and this release are approved and published. The production origin is verified; a custom domain is optional.
 
 Keep this record current after meaningful decisions, implementations and checks. Record completed work as completed only after verification; leave proposals marked pending.

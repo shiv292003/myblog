@@ -6,11 +6,11 @@ A personal blog styled as a black-and-white web notebook: dotted paper, an origi
 
 **Current version:** Quest, with an About portrait, Books / Technology / Projects / Life topics, and a friendly [Follow page](src/follow.njk). All six sample articles are drafts, so the site has no published articles. Newsletter, comments, and analytics remain disabled. The owner reviewed the local preview and approved publishing this update.
 
-**Deployment:** [myblog-wheat-nu.vercel.app](https://myblog-wheat-nu.vercel.app/) is connected to the GitHub main branch. Pushing may automatically redeploy Vercel. Production allows search indexing. The historical live checks below refer to the first "Margin notes" deployment; verify the Quest identity, portrait, RSS guide, and removed sample URLs after publishing this update.
+**Deployment:** [Quest is live](https://myblog-wheat-nu.vercel.app/) and connected to GitHub main. Pushing may automatically redeploy Vercel. Production allows search indexing. The Quest release was verified on 2026-10-17: five main pages returned HTTP 200, the portrait loaded, the footer RSS link opened the guide, RSS/sitemap parsed correctly, and all seven example article URLs returned the custom HTTP 404. Six live mobile/desktop layout cases passed.
 
 Local Quest verification: 16 automated tests and 25 responsive browser layout cases passed. RSS and sitemap parsed correctly, all sample pages were absent, the portrait loaded, and the Follow guide's navigation/address selection and visible keyboard skip link worked. This does not replace checks after the new deployment.
 
-Live checks on 2026-10-17 verified the main pages, all six article URLs, assets, navigation, 15 responsive layout cases, RSS/sitemap domain URLs, and custom HTTP 404 responses including draft exclusion. The private Vercel build log and selected Node runtime have not yet been inspected. See [the context record](PROJECT_CONTEXT.md) for exact results and limitations.
+Earlier checks of the first sample deployment on 2026-10-17 verified its pages, assets, navigation and 15 responsive layout cases. Those sample articles have since been unpublished. The private Vercel build log and selected Node runtime have not yet been inspected. See [the context record](PROJECT_CONTEXT.md) for exact results and limitations.
 
 **Continuing in a new chat:** read [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) for repository identification, decisions, file-by-file review, verification results, and pending work. Open the current Git repository rather than an older local prototype.
 
