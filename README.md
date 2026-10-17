@@ -108,7 +108,7 @@ Only use images you own or have permission to publish. The site uses system font
 
 ## Connect optional services
 
-Set variables in Vercel project settings, then redeploy. For local testing, set them in your shell before starting the server. `.env` files are **not** automatically loaded. [.env.example](.env.example) lists the expected names.
+Set variables in Vercel project settings, then redeploy. Live service UI is enabled only when `VERCEL_ENV=production` and the canonical origin is not localhost. Local and preview builds keep comments, signup and analytics off even if service identifiers are present. `.env` files are **not** automatically loaded. [.env.example](.env.example) lists the expected names. Tests exercise production rendering with dummy identifiers without contacting the services.
 
 ### Buttondown
 
@@ -131,7 +131,7 @@ Configure all four together; partial configuration fails the build. Comments use
 
 ### GoatCounter
 
-Create a hosted GoatCounter site and set `GOATCOUNTER_CODE` to the subdomain portion of its `code.goatcounter.com` address. The script is currently gated by the site's indexing state: localhost origins and Vercel preview builds suppress it. Known limitation: setting a real `SITE_URL` during local development can enable it. Keep `GOATCOUNTER_CODE` unset locally until explicit build-environment gating is implemented.
+Create a hosted GoatCounter site and set `GOATCOUNTER_CODE` to the subdomain portion of its `code.goatcounter.com` address. The script is included only in an explicitly identified Vercel production build with a non-local canonical origin. Setting a real `SITE_URL` alone does not enable it locally.
 
 Review your actual privacy obligations and service settings. Privacy-friendly does not mean no data processing.
 
@@ -139,7 +139,7 @@ Review your actual privacy obligations and service settings. Privacy-friendly do
 
 1. Replace sample content and complete the privacy page.
 2. Push the project to your GitHub repository. This project's configured origin is `https://github.com/shiv292003/myblog.git`; use `git status` and `git remote -v` to confirm your local setup before pushing.
-3. Import the repository in your Vercel account. [vercel.json](vercel.json) defines `npm ci`, `npm run build`, and `_site`.
+3. Import the repository in your Vercel account. [vercel.json](vercel.json) defines `npm ci`, `npm run check`, and `_site`. A failing build or test stops the deployment.
 4. Select a supported Node.js LTS runtime in Vercel.
 5. Set `SITE_URL` to your final HTTPS origin, e.g. `https://yourname.com` (no subpath).
 6. Add service identifiers only when their accounts are ready.
@@ -147,14 +147,14 @@ Review your actual privacy obligations and service settings. Privacy-friendly do
 8. Register your domain, add it in Vercel, and follow Vercel's DNS instructions. Choose one canonical domain and redirect alternatives.
 9. Set two-factor authentication, store recovery codes safely, and enable domain renewal reminders.
 
-Without `SITE_URL`, Vercel's production project hostname is used when available. Outside Vercel the fallback is `http://localhost:8080`, with a build warning and noindex directives. Preview builds are noindex, but **not private**; use access protection if needed.
+Without `SITE_URL`, Vercel's production project hostname is used when available. Outside Vercel the fallback is `http://localhost:8080`, with a build warning and noindex directives. Only an explicitly identified production build with a non-local origin is indexable. Local and preview builds are noindex, but **not private**; use access protection if needed.
 
 RSS currently publishes article summaries and links. Social previews include title and description; a custom share image is not included yet.
 
 ## Maintenance and known limitations
 
 - Commit the lockfile. Review dependency updates and rerun `npm run check`.
-- Rechecked on 2026-10-17: `npm audit` still reports 9 build-tool dependency advisories (5 high, 4 moderate) in the installed tree. Eleventy 3.1.7 is now available within the existing version range (3.1.6 is installed), and audit reports fix availability. Evaluate the patch, rebuild/test, and rerun audit rather than assuming all findings are resolved. No dependency changes were applied during that review. These packages are not shipped in the static site, but build/development risk still exists.
+- Updated on 2026-10-17: Eleventy 3.1.7 is installed, the build/tests pass, and `npm audit` reports zero known vulnerabilities in the installed dependency tree. Recheck periodically; a clean audit is not a guarantee against all vulnerabilities.
 - Keep a separate repository backup and export newsletter subscribers/discussions as appropriate.
 - Domain renewal and service costs are your responsibility.
 - There is no automatic newsletter sending, image optimization, search, scheduled publishing, or CMS.

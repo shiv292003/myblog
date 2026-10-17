@@ -50,6 +50,26 @@ async function withEnvironment(values, callback) {
   }
 }
 
+function renderingFixture() {
+  return new Eleventy("src", "_site", {
+    configPath: "eleventy.config.js",
+    quietMode: true,
+    config: (config) => {
+      config.addTemplate("test-render.md", [
+        "A **fixture**, not an article that needs to stay on the site.",
+        "",
+        "```js",
+        "const notebook = true;",
+        "```"
+      ].join("\n"), {
+        layout: "layouts/post.njk", title: 'Ink & "paper"', description: "A rendering fixture.",
+        slug: "test-render", section: getSections()[0].id, date: new Date("2026-10-17"),
+        permalink: "/test-render/", eleventyExcludeFromCollections: true
+      });
+    }
+  });
+}
+
 test("article validation rejects bad metadata instead of silently publishing it", () => {
   assert.doesNotThrow(() => validatePosts([article()]));
   for (const invalid of [
@@ -171,6 +191,41 @@ test("public URLs require HTTPS and previews are not indexed", async () => {
   });
 });
 
+test("a canonical domain alone never enables production behavior", async () => {
+  for (const context of [undefined, "development", "preview"]) {
+    await withEnvironment({ SITE_URL: "https://example.com", VERCEL_ENV: context }, () => {
+      assert.equal(site().isProduction, false);
+      assert.equal(site().noindex, true);
+    });
+  }
+  await withEnvironment({ SITE_URL: "http://[::1]:8080", VERCEL_ENV: "production" }, () => {
+    assert.equal(site().isProduction, false);
+    assert.equal(site().noindex, true);
+  });
+});
+
+test("local and preview HTML never activates configured live services", async () => {
+  for (const context of [undefined, "development", "preview"]) {
+    await withEnvironment({
+      SITE_URL: "https://blog.example", VERCEL_ENV: context,
+      BUTTONDOWN_USERNAME: "test-newsletter", GOATCOUNTER_CODE: "test-blog",
+      GISCUS_REPO: "example/comments", GISCUS_REPO_ID: "R_test",
+      GISCUS_CATEGORY: "Notes", GISCUS_CATEGORY_ID: "DIC_test"
+    }, async () => {
+      const pages = await renderingFixture().toJSON();
+      for (const url of ["/", "/test-render/", "/privacy/"]) {
+        const html = pages.find((page) => page.url === url).content;
+        assert.match(html, /name="robots" content="noindex, nofollow"/);
+        assert.doesNotMatch(html, /data-goatcounter|embed-subscribe|id="load-comments"|src="\/assets\/comments.js"/);
+      }
+      const privacy = pages.find((page) => page.url === "/privacy/").content;
+      assert.match(privacy, /No analytics script is currently enabled/);
+      assert.match(privacy, /Comments are not currently enabled/);
+      assert.match(pages.find((page) => page.url === "/robots.txt").content, /Disallow: \//);
+    });
+  }
+});
+
 test("production build wires configured services and canonical URLs without contacting them", async () => {
   await withEnvironment({
     SITE_URL: "https://blog.example", VERCEL_ENV: "production",
@@ -178,23 +233,7 @@ test("production build wires configured services and canonical URLs without cont
     GISCUS_REPO: "example/comments", GISCUS_REPO_ID: "R_test",
     GISCUS_CATEGORY: 'Notes & "questions"', GISCUS_CATEGORY_ID: "DIC_test"
   }, async () => {
-    const builder = new Eleventy("src", "_site", {
-      configPath: "eleventy.config.js",
-      quietMode: true,
-      config: (config) => {
-        config.addTemplate("test-render.md", [
-          "A **fixture**, not an article that needs to stay on the site.",
-          "",
-          "```js",
-          "const notebook = true;",
-          "```"
-        ].join("\n"), {
-          layout: "layouts/post.njk", title: 'Ink & "paper"', description: "A rendering fixture.",
-          slug: "test-render", section: getSections()[0].id, date: new Date("2026-10-17"),
-          permalink: "/test-render/", eleventyExcludeFromCollections: true
-        });
-      }
-    });
+    const builder = renderingFixture();
     const pages = await builder.toJSON();
     const home = pages.find((page) => page.url === "/").content;
     const post = pages.find((page) => page.url === "/test-render/").content;

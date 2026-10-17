@@ -5,7 +5,8 @@ export default function () {
   if (!["http:", "https:"].includes(url.protocol) || url.pathname !== "/" || url.search || url.hash || url.username || url.password) {
     throw new Error("SITE_URL must be an HTTP(S) origin without a path, query, or credentials.");
   }
-  const local = ["localhost", "127.0.0.1"].includes(url.hostname);
+  const local = ["localhost", "127.0.0.1", "[::1]"].includes(url.hostname);
+  const isProduction = process.env.VERCEL_ENV === "production" && !local;
   if (!local && url.protocol !== "https:") throw new Error("Public SITE_URL must use HTTPS.");
   if (local) console.warn("[site] Using localhost URLs. Set SITE_URL before publishing outside Vercel.");
   return {
@@ -13,7 +14,8 @@ export default function () {
     description: "A personal collection of essays, observations, and things learned along the way.",
     url: url.origin,
     language: "en",
-    noindex: local || process.env.VERCEL_ENV === "preview",
+    isProduction,
+    noindex: !isProduction,
     year: new Date().getUTCFullYear()
   };
 }

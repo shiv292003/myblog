@@ -2,7 +2,21 @@
 
 Last updated: 2026-10-17.
 
-**Latest status:** the monochrome notebook redesign is implemented and verified below. Earlier cream/rust and blue-link suggestions are superseded. Git has now been initialized on `main` and connected to `https://github.com/shiv292003/myblog.git`. The user requested an explanation and permission before each publishing step. Vercel deployment has not started.
+**Latest status:** the monochrome notebook redesign is implemented. The initial commit `0652517` was pushed to `https://github.com/shiv292003/myblog.git`, with local and remote commit IDs verified equal. Pre-deployment changes now update Eleventy to 3.1.7, require Vercel to run tests, and isolate live services from local/preview builds. The user authorized a first test deployment with labeled sample articles and all optional services disabled. Vercel deployment has not started. Explain each publishing step and obtain permission before executing it.
+
+## Deployment-readiness checkpoint
+
+- Eleventy updated from 3.1.6 to 3.1.7; lockfile refreshed through npm.
+- `npm audit` reports zero known vulnerabilities in the installed tree. This does not replace broader review or future audits.
+- Clean `npm run check` succeeds with 13 tests.
+- Vercel build command is now `npm run check`; output remains `_site`, installation remains `npm ci`.
+- `site.isProduction` requires `VERCEL_ENV=production` and a non-local canonical origin. Only that state enables configured comments, signup and analytics.
+- Local/development/preview builds remain noindex with all live service UI disabled even when identifiers and a real canonical domain are supplied.
+- Privacy disclosures follow the same activation rules.
+- The user chose to defer comment recovery work until comments are enabled; leave all optional service identifiers unset for the first deployment.
+- First deployment may be publicly accessible and contain the sample articles; the user explicitly accepted that scope. This is not a finished personal-content launch.
+- Local checks used Node 26.1.0. Verify the runtime selected by Vercel, and require the deployed build/tests to pass there before reporting compatibility.
+- Further staging, committing, pushing, Vercel account connection and deployment require the user's separate approval. Check Git and the actual deployment status rather than assuming this checkpoint proves those steps completed.
 
 This is the handoff and decision record for continuing this project in another chat. It records actual implementation separately from proposed changes. It is not automatically loaded by every chat tool: open the correct workspace and explicitly ask the next assistant to read this file.
 
@@ -16,7 +30,8 @@ This is the handoff and decision record for continuing this project in another c
 - The user confirmed a personal commit identity, saved only in this repository's Git configuration. Global/work Git identity was not changed.
 - The remote was queried successfully and had no references during initial setup. This is a setup observation, not a guarantee about its later contents.
 - Verify current commit/upload state using `git status`, `git log -1`, and the remote branch; do not infer a successful upload from the presence of this file.
-- No Vercel deployment or live newsletter/comment/analytics account was connected.
+- Initial upload verified: local and GitHub `main` matched commit `0652517b9e1174e14465c6d8c02eaef9fa81546c`.
+- No Vercel deployment or live newsletter/comment/analytics account was connected at this checkpoint.
 
 ## User's goals and agreed choices
 
@@ -59,7 +74,7 @@ Reference URLs supplied by the user:
 - Comments load on request rather than on initial page load.
 - Newsletter form submits directly to Buttondown; it does not automatically send published posts.
 - Static output is generated into `_site`. It is not source content.
-- No new dependency, Three.js, canvas/WebGL, web font, or animation runtime was added. CSS and a roughly 2KB SVG meet the visual brief without changing the deployment architecture.
+- No new design dependency, Three.js, canvas/WebGL, web font, or animation runtime was added. CSS and a roughly 2KB SVG meet the visual brief without changing the deployment architecture. Eleventy was subsequently patched to 3.1.7 for deployment readiness.
 - Tests no longer require four specific published titles. Public output is checked dynamically; an in-memory virtual template exercises code and integration rendering.
 
 ### Build and reading flow
@@ -78,7 +93,7 @@ Markdown + templates + CSS
      optional services
 ```
 
-GitHub-to-Vercel publishing is configured conceptually and in the Vercel config, but not connected to accounts yet.
+GitHub source upload is verified. The Vercel configuration is ready, but Vercel has not yet been connected to the repository.
 
 ### Commands
 
@@ -153,7 +168,7 @@ Verification for this implementation:
 - A fresh JavaScript-disabled browser context could not be created because of the browser tool's session-affinity restriction. Do not claim a new no-JavaScript browser test passed. The design uses static HTML/CSS/SVG and adds no reading/navigation script.
 - A generated temporary form-test page was removed after checking it. No test fixture is published.
 
-Still pending: user visual feedback, identity and real content, dependency patch evaluation, explicit local/preview analytics gating, comment recovery, actual service credentials/configuration and public deployment.
+The following historical pending items are now resolved by the deployment-readiness checkpoint: dependency patch evaluation and local/preview service gating. Still pending: final identity and real content, comment recovery before enabling comments, actual service accounts/configuration, and verified Vercel deployment.
 
 ## Earlier review request and scope (historical)
 
@@ -217,7 +232,7 @@ A few sites worth reading        [email address] [Subscribe]
 
 ## Earlier review findings and priorities
 
-Current status: sample-count/title coupling and hidden mobile dates have been addressed in the redesign. Environment gating, dependency evaluation, comment recovery, real content and deployment checks remain open. Some deliberately secondary edition/badge text remains 10-11px; navigation, dates, controls and article text are larger.
+Current status: sample-count/title coupling and hidden mobile dates were addressed in the redesign; environment gating, dependency patching and the deployment test gate were addressed during readiness work. Comment recovery, real content and live deployment checks remain open. Some deliberately secondary edition/badge text remains 10-11px; navigation, dates, controls and article text are larger.
 
 ### Address before a public launch
 
@@ -301,14 +316,13 @@ All 33 project-owned files existing at the time of the initial review were revie
 
 ## Next work, in order
 
-1. User reviews the implemented black-and-white design at the running preview URL.
-2. Apply any requested visual refinements without introducing a framework or heavy effects library.
-3. Fix local/preview service gating and comment fallback before enabling live services.
-4. Evaluate Eleventy 3.1.7, update deliberately, and rerun audit/build/tests.
-5. User supplies display name, short bio, actual article(s), final themes, and domain choice.
-6. Replace placeholders, finish privacy/contact text, and configure a deployment test gate.
-7. Complete and verify the guided GitHub upload; connect Vercel only when authorized.
-8. Deploy and inspect a preview; connect accounts and domain; perform real service checks.
+1. With separate approval, commit and push the verified readiness changes to GitHub.
+2. With approval, connect the repository to the user's Vercel account, inspect settings/runtime and deploy the core sample blog.
+3. Verify the hosted homepage, direct article links, styles/images, archive, feed, sitemap, canonical domain and actual HTTP 404/draft responses.
+4. Keep optional service identifiers unset. Finish comment recovery before enabling comments.
+5. User supplies display name, short bio, actual articles, final themes and domain choice.
+6. Replace placeholders and complete the privacy/contact text before promoting the site as a finished personal blog.
+7. Connect service accounts/domain only with authorization, and test real signup, unsubscribe, comments and analytics flows.
 
 Unresolved: final sign-off on the implemented design, owner identity, domain, production origin, account identifiers, repository visibility choice, and actual article content.
 

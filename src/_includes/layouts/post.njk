@@ -17,7 +17,7 @@ isPost: true
 <section class="comments" aria-labelledby="comments-title">
   <p class="eyebrow">A conversation, if you'd like</p>
   <h2 id="comments-title">In the margins</h2>
-  {% if integrations.giscus %}
+  {% if integrations.giscus and site.isProduction %}
   <p>Comments are hosted on GitHub Discussions. A GitHub account is needed to join in.</p>
   <button class="comments-button" id="load-comments" type="button"
     data-repo="{{ integrations.giscus.repo }}" data-repo-id="{{ integrations.giscus.repoId }}"
@@ -28,6 +28,6 @@ isPost: true
   <noscript><p>Comments need JavaScript. You can also visit <a href="https://github.com/{{ integrations.giscus.repo }}/discussions">GitHub Discussions</a>.</p></noscript>
   <script src="/assets/comments.js" defer></script>
   {% else %}
-  <p>Comments aren't connected yet. For now, this space is just for reading.</p>
+  <p>Comments aren't enabled on this version of the site. For now, this space is just for reading.</p>
   {% endif %}
 </section>

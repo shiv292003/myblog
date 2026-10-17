@@ -18,7 +18,7 @@
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/style.css">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="/feed.xml">
-  {% if integrations.goatcounter and not site.noindex %}
+  {% if integrations.goatcounter and site.isProduction %}
   <script data-goatcounter="https://{{ integrations.goatcounter }}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
   {% endif %}
 </head>
